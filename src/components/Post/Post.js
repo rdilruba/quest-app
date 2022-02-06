@@ -15,7 +15,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import CommentIcon from '@material-ui/icons/Comment';
 import Comment from "../Comment/Comment";
 import CommentForm from "../Comment/CommentForm";
-
+import { PostWithAuth, DeleteWithAuth } from "../../services/HttpService";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,8 +55,12 @@ function Post(props) {
    const isInitialMount = useRef(true);
    const [likeCount, setLikeCount] = useState(likes.length);
    const [likeId, setLikeId] = useState(null);
+   const [refresh, setRefresh] = useState(false);
    let disabled = localStorage.getItem("currentUser") == null ? true:false;
    
+   const setCommentRefresh = () => {
+     setRefresh(true);
+   }
    const handleExpandClick = () => {
      setExpanded(!expanded);
      refreshComments();
@@ -90,31 +94,21 @@ function Post(props) {
             setError(error);
         }
     )
+
+    setRefresh(false)
   }
 
   const saveLike = () => {
-    fetch("/likes", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization" : localStorage.getItem("tokenKey"),
-      },
-      body: JSON.stringify({
-        postId: postId, 
-        userId : localStorage.getItem("currentUser"),
-      }),
+    PostWithAuth("/likes",{
+      postId: postId, 
+      userId : localStorage.getItem("currentUser"),
     })
       .then((res) => res.json())
       .catch((err) => console.log(err))
   }
 
   const deleteLike = () => {
-    fetch("/likes/"+likeId, {
-      method: "DELETE",
-      headers: {
-        "Authorization" : localStorage.getItem("tokenKey"),
-      },
-    })
+    DeleteWithAuth("/likes/"+likeId)
       .catch((err) => console.log(err))
   }
 
@@ -130,7 +124,7 @@ function Post(props) {
       isInitialMount.current = false;
     else
       refreshComments();
-  }, [commentList])
+  }, [refresh])
 
   useEffect(() => {checkLikes()},[])
 
@@ -183,10 +177,10 @@ function Post(props) {
                     <Container fixed className = {classes.container}>
                     {error? "error" :
                     isLoaded? commentList.map(comment => (
-                      <Comment userId = {1} userName = {"USER"} text = {comment.text}></Comment>
+                      <Comment userId = {comment.userId} userName = {comment.userName} text = {comment.text}></Comment>
                     )) : "Loading"}
                     {disabled? "":
-                    <CommentForm userId = {userId} userName = {userName} postId = {postId}></CommentForm>}
+                    <CommentForm userId = {localStorage.getItem("currentUser")} userName = {localStorage.getItem("userName")} postId = {postId} setCommentRefresh={setCommentRefresh}></CommentForm>}
                     </Container>
                 </Collapse>
                 </Card>

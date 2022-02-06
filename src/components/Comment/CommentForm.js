@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { CardContent, InputAdornment, OutlinedInput, Avatar, Button} from "@material-ui/core";
-
+import { PostWithAuth } from "../../services/HttpService";
 const useStyles = makeStyles((theme) => ({
     comment : {
         display: "flex",
@@ -22,23 +22,16 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 function CommentForm(props) {
-    const {userId, userName, postId} = props;
+    const {userId, userName, postId, setCommentRefresh} = props;
     const classes = useStyles();
     const [text, setText] = useState("");
 
     const saveComment = () => {
-        fetch("/comments", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization" : localStorage.getItem("tokenKey"),
-          },
-          body: JSON.stringify({
+        PostWithAuth("/comments",{
             postId: postId, 
             userId : userId,
             text : text,
-          }),
-        })
+          })
           .then((res) => res.json())
           .catch((err) => console.log(err))
     }
@@ -46,6 +39,7 @@ function CommentForm(props) {
     const handleSubmit = () => {
         saveComment();
         setText("");
+        setCommentRefresh();
     }
 
     const handleChange = (value) => {

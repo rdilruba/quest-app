@@ -8,7 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {ListItem, List, ListItemSecondaryAction, Radio} from '@material-ui/core';
-
+import { PutWithAuth } from '../../services/HttpService';
 const useStyles = makeStyles({
     root: {
       maxWidth: 345,
@@ -21,22 +21,14 @@ const useStyles = makeStyles({
   });
 
 function Avatar(props) {
-  const {avatarId} = props;
+  const {avatarId, userId, userName} = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(avatarId);
 
   const saveAvatar = () => {
-    console.log("HELLO")
-    fetch("/users/"+localStorage.getItem("currentUser"), {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization" : localStorage.getItem("tokenKey"),
-      },
-      body: JSON.stringify({
-        avatar: selectedValue,
-      }),
+    PutWithAuth("/users/"+localStorage.getItem("currentUser"), {
+      avatar: selectedValue,
     })
       .then((res) => res.json())
       .catch((err) => console.log(err))
@@ -67,16 +59,16 @@ function Avatar(props) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Username
+            {userName}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             User info
           </Typography>
         </CardContent>
       <CardActions>
-        <Button size="small" color="primary"  onClick={handleOpen}>
+        {localStorage.getItem("currentUser") == userId ? <Button size="small" color="primary"  onClick={handleOpen}>
           Change Avatar
-        </Button>
+        </Button> : ""}
       </CardActions>
     </Card>
     <Modal

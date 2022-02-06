@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { InputAdornment } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-
+import { PostWithAuth } from "../../services/HttpService";
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -51,17 +51,10 @@ function PostForm(props) {
    const [isSent, setIsSent] = useState(false);
 
    const savePost = () => {
-    fetch("/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization" : localStorage.getItem("tokenKey"),
-      },
-      body: JSON.stringify({
-        title: title, 
-        userId : userId,
-        text : text,
-      }),
+    PostWithAuth("/posts", {
+      title: title, 
+      userId : userId,
+      text : text,
     })
       .then((res) => res.json())
       .catch((err) => console.log(err))
