@@ -21,7 +21,8 @@ function Auth() {
             password : password,
           })
           .then((res) => res.json())
-          .then((result) => {localStorage.setItem("tokenKey",result.message);
+          .then((result) => {localStorage.setItem("tokenKey",result.accessToken);
+                            localStorage.setItem("refreshKey",result.refreshToken);
                             localStorage.setItem("currentUser",result.userId);
                             localStorage.setItem("userName",username)})
           .catch((err) => console.log(err))
