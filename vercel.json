@@ -1,0 +1,6 @@
+{
+    "rewrites": [
+      { "source": "/*", "destination": "https://questapp-backend-rdilruba-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/*" },
+      { "source": "/proxy/*", "destination": "https://questapp-backend-rdilruba-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/*" }
+    ]
+  }

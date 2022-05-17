@@ -41,5 +41,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://questapp-backend-rdilruba-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com"
+  "proxy": "https://questapp-backend-rdilruba-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com",
+  "now-build": "react-scripts build && mv build dist"
 }
