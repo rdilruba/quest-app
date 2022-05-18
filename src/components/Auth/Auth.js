@@ -32,7 +32,7 @@ function Auth() {
         sendRequest(path)
         setUsername("")
         setPassword("")
-        history.go("/auth")
+        //history.go("/auth")
     }
 
     return(
