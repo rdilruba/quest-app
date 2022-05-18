@@ -32,6 +32,7 @@ function Auth() {
         sendRequest(path)
         setUsername("")
         setPassword("")
+        console.log(localStorage)
         //history.go("/auth")
     }
 
