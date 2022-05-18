@@ -1,5 +1,5 @@
 {
     "rewrites": [
-      { "source": "/api/:path*", "destination": "https://questapp-backend-rdilruba-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/:path*" }
+      { "source": "/api/:path*", "destination": "https://questapp-2-rdilruba-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/:path*" }
     ]
   }
